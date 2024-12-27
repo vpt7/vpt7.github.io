@@ -1,0 +1,9 @@
+kubectl -n $CPSPACE rollout undo deployment/$DEPLOYMENT
+
+
+sleep 60
+kubectl -n $CPSPACE rollout undo deployment/$DEPLOYMENT
+
+
+cd sample-app
+kubectl -n prod rollout undo deployment/production-deployment
