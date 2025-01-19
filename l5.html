@@ -1,0 +1,17 @@
+from transformers import BertForSequenceClassification, BertTokenizer, Trainer, TrainingArguments
+from datasets import Dataset
+
+
+data = {"text": ["I love this!", "I hate this!", "It's okay."], "label": [1, 0, 2]}
+dataset = Dataset.from_dict(data)
+
+
+tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=3)
+
+dataset = dataset.map(lambda x: tokenizer(x["text"], padding=True, truncation=True), batched=True)
+
+
+training_args = TrainingArguments(output_dir="./results", num_train_epochs=3)
+trainer = Trainer(model=model, args=training_args, train_dataset=dataset)
+trainer.train()
