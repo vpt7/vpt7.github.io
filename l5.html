@@ -17,3 +17,5 @@ dataset = dataset.map(lambda x: tokenizer(x["text"], padding=True, truncation=Tr
 training_args = TrainingArguments(output_dir="./results", num_train_epochs=3)
 trainer = Trainer(model=model, args=training_args, train_dataset=dataset)
 trainer.train()
+
+34736d5200250d1ee7b7c05b7ff8c436f0181210
