@@ -1,3 +1,4 @@
+!pip install datasets
 from transformers import BertForSequenceClassification, BertTokenizer, Trainer, TrainingArguments
 from datasets import Dataset
 
@@ -8,6 +9,7 @@ dataset = Dataset.from_dict(data)
 
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=3)
+
 
 dataset = dataset.map(lambda x: tokenizer(x["text"], padding=True, truncation=True), batched=True)
 
