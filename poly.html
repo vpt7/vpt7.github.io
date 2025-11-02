@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    char text[] = "wearediscoveredsaveyourself", key[] = "deceptive", enc[100], dec[100];
+    int i, n = strlen(text), klen = strlen(key);
+
+    for (i = 0; i < n; i++)
+        enc[i] = ((toupper(text[i]) - 'A') + (toupper(key[i % klen]) - 'A')) % 26 + 'A';
+    enc[n] = '\0';
+
+    for (i = 0; i < n; i++)
+        dec[i] = ((enc[i] - 'A') - (toupper(key[i % klen]) - 'A') + 26) % 26 + 'A';
+    dec[n] = '\0';
+
+    printf("Plaintext : %s\n", text);
+    printf("Key       : %s\n", key);
+    printf("Encrypted : %s\n", enc);
+    printf("Decrypted : %s\n", dec);
+    return 0;
+}
