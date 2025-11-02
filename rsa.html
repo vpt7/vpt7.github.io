@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <math.h>
+
+long long power(long long a, long long b, long long n) {
+    long long r = 1;
+    while (b--) r = (r * a) % n;
+    return r;
+}
+
+int main() {
+    long long p = 3, q = 11, n = p * q, phi = (p - 1) * (q - 1);
+    long long e = 7, d = 3; // since (e*d) % phi = 1
+    long long msg = 9; // sample message
+
+    long long enc = power(msg, e, n);
+    long long dec = power(enc, d, n);
+
+    printf("Public Key (e,n): (%lld,%lld)\n", e, n);
+    printf("Private Key (d,n): (%lld,%lld)\n", d, n);
+    printf("Original Message: %lld\n", msg);
+    printf("Encrypted Message: %lld\n", enc);
+    printf("Decrypted Message: %lld\n", dec);
+    return 0;
+}
