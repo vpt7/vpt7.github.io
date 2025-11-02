@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+char m[5][5];
+
+void kgen(char *k) {
+    int u[26] = {0}, p = 0;
+    u['J' - 'A'] = 1;
+    for (int i = 0; k[i]; i++) {
+        char c = toupper(k[i]);
+        if (isalpha(c) && !u[c - 'A'])
+            m[p / 5][p % 5] = c, u[c - 'A'] = 1, p++;
+    }
+    for (int i = 0; i < 26; i++)
+        if (!u[i]) m[p / 5][p % 5] = 'A' + i, p++;
+}
+
+void pos(char c, int *r, int *c1) {
+    if (c == 'J') c = 'I';
+    for (int i = 0; i < 5; i++)
+        for (int j = 0; j < 5; j++)
+            if (m[i][j] == c) { *r = i; *c1 = j; return; }
+}
+
+void enc(char *t) {
+    char o[100], p[100];
+    int n = 0, k = 0;
+    for (int i = 0; t[i]; i++)
+        if (isalpha(t[i])) o[n++] = toupper(t[i]);
+    o[n] = 0;
+    for (int i = 0; i < n; i++) {
+        p[k++] = o[i];
+        if (i + 1 < n && o[i] == o[i + 1]) p[k++] = 'X';
+        else if (i + 1 < n) p[k++] = o[++i];
+    }
+    if (k % 2) p[k++] = 'X';
+    p[k] = 0;
+
+    printf("Encrypted: ");
+    for (int i = 0; i < k; i += 2) {
+        int r1, c1, r2, c2;
+        pos(p[i], &r1, &c1);
+        pos(p[i + 1], &r2, &c2);
+        if (r1 == r2)
+            printf("%c%c", m[r1][(c1 + 1) % 5], m[r2][(c2 + 1) % 5]);
+        else if (c1 == c2)
+            printf("%c%c", m[(r1 + 1) % 5][c1], m[(r2 + 1) % 5][c2]);
+        else
+            printf("%c%c", m[r1][c2], m[r2][c1]);
+    }
+}
+
+int main() {
+    char k[50], t[100];
+    printf("Key: ");
+    gets(k);
+    printf("Text: ");
+    gets(t);
+    kgen(k);
+    enc(t);
+}
