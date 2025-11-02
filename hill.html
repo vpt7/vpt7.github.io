@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    int n, i, j, k;
+    char text[50];
+    int key[3][3], msg[3], res[3];
+
+    printf("Enter matrix size (2 or 3): ");
+    scanf("%d", &n);
+    printf("Enter key matrix:\n");
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            scanf("%d", &key[i][j]);
+
+    printf("Enter plaintext: ");
+    scanf("%s", text);
+    int len = strlen(text);
+    for (i = 0; i < len; i++) text[i] = toupper(text[i]);
+
+    printf("Encrypted Text: ");
+    for (i = 0; i < len; i += n) {
+        for (j = 0; j < n; j++)
+            msg[j] = (i + j < len) ? text[i + j] - 'A' : 'X' - 'A';
+        for (j = 0; j < n; j++) {
+            res[j] = 0;
+            for (k = 0; k < n; k++)
+                res[j] += key[j][k] * msg[k];
+            printf("%c", (res[j] % 26) + 'A');
+        }
+    }
+    return 0;
+}
