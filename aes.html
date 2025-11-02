@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <string.h>
+#include <openssl/aes.h>
+
+int main() {
+    unsigned char key[16] = "1234567890abcdef";
+    unsigned char iv[AES_BLOCK_SIZE] = "abcdef1234567890";
+    unsigned char text[] = "welcome to ISE";
+    unsigned char enc[128], dec[128];
+
+    AES_KEY enc_key, dec_key;
+    AES_set_encrypt_key(key, 128, &enc_key);
+    AES_cbc_encrypt(text, enc, sizeof(text), &enc_key, iv, AES_ENCRYPT);
+
+    printf("Encrypted: ");
+    for(int i=0;i<sizeof(text);i++) printf("%02x", enc[i]);
+    printf("\n");
+
+    unsigned char iv2[AES_BLOCK_SIZE] = "abcdef1234567890";
+    AES_set_decrypt_key(key, 128, &dec_key);
+    AES_cbc_encrypt(enc, dec, sizeof(text), &dec_key, iv2, AES_DECRYPT);
+
+    printf("Decrypted: %s\n", dec);
+    return 0;
+}
