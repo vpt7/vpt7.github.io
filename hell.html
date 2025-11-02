@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <math.h>
+
+long long power(long long a, long long b, long long p) {
+    long long r = 1;
+    while (b--) r = (r * a) % p;
+    return r;
+}
+
+int main() {
+    long long P = 23, G = 9;        // public values
+    long long a = 4, b = 3;         // private keys
+    long long A = power(G, a, P);   // public key of A
+    long long B = power(G, b, P);   // public key of B
+    long long keyA = power(B, a, P); // shared secret at A
+    long long keyB = power(A, b, P); // shared secret at B
+
+    printf("Public Keys: A=%lld, B=%lld\n", A, B);
+    printf("Shared Secret (A): %lld\n", keyA);
+    printf("Shared Secret (B): %lld\n", keyB);
+    return 0;
+}
